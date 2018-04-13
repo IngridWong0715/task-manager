@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'welcome#welcome'
   resources :users, only: [:new, :create, :show] do
-    resources :lists
+    resources :lists, except: [:show]
   end
 
   get '/login', to: 'sessions#new'

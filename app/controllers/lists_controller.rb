@@ -3,6 +3,7 @@ class ListsController < ApplicationController
   # /users/:user_id/lists
   # a user should only be able to operate on her own lists
   before_action :require_authorization
+  before_action :set_list, only: [:edit, :update, :destroy]
 
 
   def index
@@ -12,23 +13,27 @@ class ListsController < ApplicationController
   end
 
   def new
+    @list = List.new
   end
 
   def create
-    raise params.inspect
-  end
+    current_user.lists.create(list_params)
+    redirect_to user_lists_path(current_user)
 
-  def show
   end
 
   def edit
   end
 
   def update
-    raise params.inspect
+    @list.update(list_params)
+    redirect_to user_lists_path(current_user)
   end
 
   def destroy
+    @list.destroy
+    redirect_to user_lists_path(current_user)
+
   end
 
   private
@@ -43,5 +48,14 @@ class ListsController < ApplicationController
       redirect_to user_lists_path(current_user)
     end
   end
+
+  def list_params
+    params.require(:list).permit(:name, :description, :team_id, :user_id)
+  end
+
+  def set_list
+    @list = List.find(params[:id])
+  end
+
 
 end
