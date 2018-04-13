@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
   root 'welcome#welcome'
-  resources :users, only: [:new, :create, :show]
+  resources :users, only: [:new, :create, :show] do
+    resources :lists
+  end
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
