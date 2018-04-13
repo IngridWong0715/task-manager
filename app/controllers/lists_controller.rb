@@ -3,30 +3,35 @@ class ListsController < ApplicationController
   # /users/:user_id/lists
   # a user should only be able to operate on her own lists
   before_action :require_authorization
-  before_action :set_list, only: [:edit, :update, :destroy]
+  before_action :set_list, only: [:show, :edit, :update, :destroy]
 
 
   def index
-
    @lists = current_user.lists
-
   end
 
   def new
     @list = List.new
   end
 
-  def create
-    current_user.lists.create(list_params)
-    redirect_to user_lists_path(current_user)
+  def show
+    @item = @list.items.create
+  end
 
+  def create
+    if current_user.lists.create(list_params).valid?
+      flash[:notice] = "list created successfully"
+    else
+      flash[:warning] = "list not created"
+    end
+    redirect_to user_lists_path(current_user)
   end
 
   def edit
   end
 
   def update
-    @list.update(list_params)
+    @list.update(list_params).valid?
     redirect_to user_lists_path(current_user)
   end
 
