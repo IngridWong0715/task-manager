@@ -1,3 +1,6 @@
-show user
 
-<%= @user.name %>
+
+<%= current_user.name %>
+
+<%= form_tag('/logout') %>
+<input type="submit" value="Log Out">
