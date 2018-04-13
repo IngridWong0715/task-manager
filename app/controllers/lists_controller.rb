@@ -1,8 +1,5 @@
 class ListsController < ApplicationController
-  # all routes are nested under user:
-  # /users/:user_id/lists
-  # a user should only be able to operate on her own lists
-  before_action :require_authorization
+
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
 
@@ -42,17 +39,6 @@ class ListsController < ApplicationController
   end
 
   private
-
-  def authorized_access?
-    current_user.id.to_s == params[:user_id]
-  end
-
-  def require_authorization
-    if !authorized_access?
-      flash[:warning] = "You only have access to your own lists"
-      redirect_to user_lists_path(current_user)
-    end
-  end
 
   def list_params
     params.require(:list).permit(:name, :description, :team_id, :user_id)

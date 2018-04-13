@@ -1,6 +1,8 @@
-
-
 <%= current_user.name %>
+Your lists are:
+<%= @lists.each do |list| %>
+  <%= link_to list.name, list_path(list) %>
+<% end %>
 
 <%= form_tag('/logout') %>
 <input type="submit" value="Log Out">

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  #skip_before_action :require_authentication, only: [:new, :create]
+  skip_before_action :require_authentication, only: [:new, :create]
 
   def new
     @user = User.new
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     if !User.find_by(email: params[:user][:email])
       user = User.create(user_params)
       session[:user_id] = user.id
-      redirect_to user_path(user)
+      redirect_to home_path
     else
       flash[:warning] = "User already exists, please sign in instead"
       redirect_to root_path
@@ -18,7 +18,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = current_user
+    @lists = @user.lists # REFACTOR THIS PATTERN?
   end
 
   private

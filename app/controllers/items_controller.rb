@@ -1,9 +1,13 @@
 class ItemsController < ApplicationController
   def create
     item = Item.create(item_params)
-    list = item.list
-    redirect_to user_list_path(item.user.id, item.list) #CHANGE!!! 
+    redirect_to list_path(item.list) #CHANGE!!!
   end
+
+  def index
+  end
+
+
 
   private
 
